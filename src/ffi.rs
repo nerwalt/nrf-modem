@@ -667,6 +667,8 @@ pub unsafe extern "C" fn nrf_modem_os_mutex_unlock(
 #[no_mangle]
 pub extern "C" fn nrf_modem_os_log(_level: core::ffi::c_int, _fmt: *const core::ffi::c_char) {
     // TODO FIXME
+    #[cfg(feature = "defmt")]
+    defmt::warn!("nrf_modem_os_log was called, but it is not implemented.");
 }
 
 /// Logging procedure for dumping hex representation of object.
@@ -684,4 +686,6 @@ pub extern "C" fn nrf_modem_os_logdump(
     _len: core::ffi::c_int,
 ) {
     // TODO FIXME
+    #[cfg(feature = "defmt")]
+    defmt::warn!("nrf_modem_os_logdump was called, but it is not implemented.");
 }

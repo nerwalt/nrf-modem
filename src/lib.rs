@@ -25,6 +25,7 @@ mod lte_link;
 mod sms;
 pub(crate) mod socket;
 mod tcp_stream;
+mod tls_stream;
 mod udp_socket;
 pub(crate) mod waker_node_list;
 
@@ -41,6 +42,7 @@ pub use gnss::*;
 pub use lte_link::LteLink;
 pub use sms::*;
 pub use tcp_stream::*;
+pub use tls_stream::*;
 pub use udp_socket::*;
 
 #[cfg(feature = "nrf9160")]

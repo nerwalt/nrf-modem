@@ -691,13 +691,16 @@ pub enum SocketProtocol {
 }
 
 #[allow(clippy::enum_variant_names)]
+#[allow(unused)] // TODO FIXME ???
 #[derive(Debug)]
 pub enum SocketOption<'a> {
     TlsHostName(&'a str),
     TlsPeerVerify(nrfxlib_sys::nrf_sec_peer_verify_t),
     TlsSessionCache(nrfxlib_sys::nrf_sec_session_cache_t),
     TlsTagList(&'a [nrfxlib_sys::nrf_sec_tag_t]),
+    TlsCipherSuiteList(&'a [core::ffi::c_int]),
 }
+
 impl<'a> SocketOption<'a> {
     pub(crate) fn get_name(&self) -> i32 {
         match self {
@@ -705,6 +708,7 @@ impl<'a> SocketOption<'a> {
             SocketOption::TlsPeerVerify(_) => nrfxlib_sys::NRF_SO_SEC_PEER_VERIFY as i32,
             SocketOption::TlsSessionCache(_) => nrfxlib_sys::NRF_SO_SEC_SESSION_CACHE as i32,
             SocketOption::TlsTagList(_) => nrfxlib_sys::NRF_SO_SEC_TAG_LIST as i32,
+            SocketOption::TlsCipherSuiteList(_) => nrfxlib_sys::NRF_SO_SEC_CIPHERSUITE_LIST as i32,
         }
     }
 
@@ -714,6 +718,7 @@ impl<'a> SocketOption<'a> {
             SocketOption::TlsPeerVerify(x) => x as *const _ as *const core::ffi::c_void,
             SocketOption::TlsSessionCache(x) => x as *const _ as *const core::ffi::c_void,
             SocketOption::TlsTagList(x) => x.as_ptr() as *const core::ffi::c_void,
+            SocketOption::TlsCipherSuiteList(x) => x.as_ptr() as *const core::ffi::c_void,
         }
     }
 
@@ -723,6 +728,7 @@ impl<'a> SocketOption<'a> {
             SocketOption::TlsPeerVerify(x) => core::mem::size_of_val(x) as u32,
             SocketOption::TlsSessionCache(x) => core::mem::size_of_val(x) as u32,
             SocketOption::TlsTagList(x) => core::mem::size_of_val(*x) as u32,
+            SocketOption::TlsCipherSuiteList(x) => core::mem::size_of_val(*x) as u32,
         }
     }
 }

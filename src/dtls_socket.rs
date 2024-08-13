@@ -186,8 +186,9 @@ pub enum PeerVerification {
     Optional,
     Disabled,
 }
+
 impl PeerVerification {
-    fn as_integer(self) -> u32 {
+    pub fn as_integer(self) -> u32 {
         match self {
             PeerVerification::Enabled => 2,
             PeerVerification::Optional => 1,
@@ -195,6 +196,7 @@ impl PeerVerification {
         }
     }
 }
+
 #[derive(Debug, Copy, Clone)]
 pub enum Version {
     Dtls1v2,
