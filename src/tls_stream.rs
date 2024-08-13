@@ -1,11 +1,11 @@
 use crate::{
     error::Error,
     socket::{Socket, SocketFamily, SocketOption, SocketProtocol, SocketType, SplitSocketHandle},
+    tls::PeerVerification,
     CancellationToken, LteLink,
 };
-use no_std_net::ToSocketAddrs;
 
-use crate::dtls_socket::PeerVerification;
+use no_std_net::ToSocketAddrs;
 
 /// A TLS (TCP) stream that is connected to another endpoint
 pub struct TlsStream {
@@ -113,7 +113,14 @@ impl TlsStream {
         peer_verify: PeerVerification,
         security_tags: &[u32],
     ) -> Result<Self, Error> {
-        Self::connect_with_cancellation(hostname, addr, peer_verify, security_tags, &Default::default()).await
+        Self::connect_with_cancellation(
+            hostname,
+            addr,
+            peer_verify,
+            security_tags,
+            &Default::default(),
+        )
+        .await
     }
 
     /// Connect a TLS stream to the given address

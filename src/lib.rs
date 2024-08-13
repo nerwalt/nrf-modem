@@ -25,6 +25,7 @@ mod lte_link;
 mod sms;
 pub(crate) mod socket;
 mod tcp_stream;
+mod tls;
 mod tls_stream;
 mod udp_socket;
 pub(crate) mod waker_node_list;
