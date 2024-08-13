@@ -108,13 +108,11 @@ macro_rules! impl_write {
 impl TlsStream {
     /// Connect a TLS (TCP) stream to the given address
     pub async fn connect(
-        hostname: &str,
         addr: impl ToSocketAddrs,
         peer_verify: PeerVerification,
         security_tags: &[u32],
     ) -> Result<Self, Error> {
         Self::connect_with_cancellation(
-            hostname,
             addr,
             peer_verify,
             security_tags,
@@ -125,7 +123,6 @@ impl TlsStream {
 
     /// Connect a TLS stream to the given address
     pub async fn connect_with_cancellation(
-        hostname: &str,
         addr: impl ToSocketAddrs,
         peer_verify: PeerVerification,
         security_tags: &[u32],
@@ -147,28 +144,6 @@ impl TlsStream {
             socket.set_option(SocketOption::TlsPeerVerify(peer_verify.as_integer()))?;
             socket.set_option(SocketOption::TlsSessionCache(0))?;
             socket.set_option(SocketOption::TlsTagList(security_tags))?;
-            socket.set_option(SocketOption::TlsHostName(hostname))?;
-
-            // Restrict to TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
-            // socket.set_option(SocketOption::TlsCipherSuiteList(&[0xC014]))?;
-            let ciphers = [
-                0xC024, // TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384
-                0xC00A, // TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA
-                0xC023, // TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256
-                0xC009, // TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA
-                0xC02B, // TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256
-                0xC014, // TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA
-                0xC027, // TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256
-                0xC013, // TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA
-                0xC02F, // TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256
-                0xC030, // TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
-                0x008D, // TLS-PSK-WITH-AES-256-CBC-SHA
-                0x00AE, // TLS-PSK-WITH-AES-128-CBC-SHA256
-                0x008C, // TLS-PSK-WITH-AES-128-CBC-SHA
-                0xC0A8, // TLS-PSK-WITH-AES-128-CCM-8
-                0x00FF, // TLS-EMPTY-RENEGOTIATIONINFO-SCSV
-            ];
-            socket.set_option(SocketOption::TlsCipherSuiteList(&ciphers))?;
 
             match unsafe { socket.connect(addr, token).await } {
                 Ok(_) => {

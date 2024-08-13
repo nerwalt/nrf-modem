@@ -26,6 +26,7 @@ mod sms;
 pub(crate) mod socket;
 mod tcp_stream;
 mod tls;
+#[cfg(feature = "nrf9120")]
 mod tls_stream;
 mod udp_socket;
 pub(crate) mod waker_node_list;
@@ -44,6 +45,7 @@ pub use lte_link::LteLink;
 pub use sms::*;
 pub use tcp_stream::*;
 pub use tls::*;
+#[cfg(feature = "nrf9120")]
 pub use tls_stream::*;
 pub use udp_socket::*;
 
