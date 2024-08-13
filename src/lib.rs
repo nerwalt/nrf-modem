@@ -43,6 +43,7 @@ pub use gnss::*;
 pub use lte_link::LteLink;
 pub use sms::*;
 pub use tcp_stream::*;
+pub use tls::*;
 pub use tls_stream::*;
 pub use udp_socket::*;
 
