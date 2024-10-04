@@ -205,6 +205,10 @@ pub async fn init_with_custom_layout(
     #[cfg(feature = "modem-trace")]
     at::send_at::<0>("AT%XMODEMTRACE=1,2").await?;
 
+    if mode.pti_support {
+        return Ok(())
+    }
+
     // Initialize AT notifications
     at_notifications::initialize()?;
 
@@ -339,6 +343,8 @@ pub struct SystemMode {
     pub gnss_support: bool,
     /// Sets up the preference the modem will have for connecting to the mobile network
     pub preference: ConnectionPreference,
+    /// Production Test Image support
+    pub pti_support: bool,
 }
 
 /// The preference the modem will have for connecting to the mobile network
