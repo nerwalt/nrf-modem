@@ -552,3 +552,13 @@ impl Drop for GnssStream {
         }
     }
 }
+
+pub fn nrf_modem_gnss_agnss_data_expiry_get() -> Result<nrfxlib_sys::nrf_modem_gnss_agnss_expiry, Error> {
+    let mut data: MaybeUninit<nrfxlib_sys::nrf_modem_gnss_agnss_expiry> =
+        MaybeUninit::uninit();
+
+    unsafe {
+        nrfxlib_sys::nrf_modem_gnss_agnss_expiry_get(data.as_mut_ptr() as *mut _).into_result()?;
+        Ok(data.assume_init())
+    }
+}
