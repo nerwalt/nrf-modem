@@ -1,0 +1,11 @@
+[target.'cfg(all(target_arch = "arm", target_os = "none"))']
+# probe-rs does not yet support the nRF9151, so use the 9160 for now. The 9160
+# and the 9151 (9120) are very similar, so this will probably work indefinitely.
+# runner = "probe-rs run --chip nRF9160_xxAA --connect-under-reset"
+runner = "probe-rs run --chip nRF9160_xxAA --speed 1000"
+
+[build]
+target = "thumbv8m.main-none-eabihf"
+
+[env]
+DEFMT_LOG = "trace"
